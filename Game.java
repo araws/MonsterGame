@@ -7,7 +7,7 @@ public class Game {
 
     char[][] gameBoard = null;
 
-    List<Monster> monsterList = new ArrayList<>(  );
+    List<Monster> monsterList = new ArrayList<>();
 
     public enum GameDifficulty {
         EASY( 25, 15, 10, 4, 3 ),
@@ -59,18 +59,23 @@ public class Game {
 
         Player player = new Player( 3, 10, 10 );
 
-        monsterList.add(new Monster( 3,4 ));
-        monsterList.add(new Monster( 4,6 ));
-        monsterList.add(new Monster( 6,7 ));
-        monsterList.add(new Monster( 8,22 ));
-        monsterList.add(new Monster( 9,19 ));
-        monsterList.add(new Monster( 11,21 ));
-        monsterList.add(new Monster( 13,2));
-        monsterList.add(new Monster( 14,7 ));
-        monsterList.add(new Monster( 14,5 ));
-        monsterList.add(new Monster( 15,23 ));
+        monsterList.add( new Monster( 3, 4 ) );
+        monsterList.add( new Monster( 4, 6 ) );
+        monsterList.add( new Monster( 6, 7 ) );
+        monsterList.add( new Monster( 8, 22 ) );
+        monsterList.add( new Monster( 9, 19 ) );
+        monsterList.add( new Monster( 11, 21 ) );
+        monsterList.add( new Monster( 13, 2 ) );
+        monsterList.add( new Monster( 14, 7 ) );
+        monsterList.add( new Monster( 14, 5 ) );
+        monsterList.add( new Monster( 15, 23 ) );
 
         gameBoard = new char[17][27];
+        refreshGameBoard( player );
+
+    }
+
+    private void refreshGameBoard(Player player) {
         for (int row = 0; row < 17; row++) {
             for (int column = 0; column < 27; column++) {
                 if (row == 0) {
@@ -85,12 +90,12 @@ public class Game {
                     gameBoard[row][column] = ' ';
                 }
 
-                if ((row == player.getPositionX())&&(column == player.getPositionY())) {
+                if ((row == player.getPositionX()) && (column == player.getPositionY())) {
                     gameBoard[row][column] = 'P';
                 }
 
                 for (Monster monster : monsterList) {
-                    if ((row == monster.getPositionX())&&(column == monster.getPositionY())) {
+                    if ((row == monster.getPositionX()) && (column == monster.getPositionY())) {
                         gameBoard[row][column] = 'M';
                     }
                 }
@@ -100,9 +105,6 @@ public class Game {
 
         }
         System.out.println();
-
-
-
     }
 }
 

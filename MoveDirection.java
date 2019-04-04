@@ -19,5 +19,13 @@ public class MoveDirection {
             this.changeDirectionX = changeDirectionX;
             this.changeDirectionY = changeDirectionY;
         }
+
+        public int getChangeDirectionX() {
+            return changeDirectionX;
+        }
+
+        public int getChangeDirectionY() {
+            return changeDirectionY;
+        }
     }
 }

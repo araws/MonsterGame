@@ -6,5 +6,8 @@ public class Player extends Character {
         super( liveQuantity, positionX, positionY );
     }
 
-
+    @Override
+    public void move(MoveDirection.MoveDirectionOfCharacter dir) {
+        super.move( dir );
+    }
 }
