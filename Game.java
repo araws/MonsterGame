@@ -72,6 +72,8 @@ public class Game {
 
         gameBoard = new char[17][27];
         refreshGameBoard( player );
+        player.move( MoveDirection.MoveDirectionOfCharacter.N );
+        refreshGameBoard( player );
 
     }
 
