@@ -1,5 +1,8 @@
 package projects.monsterGame;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,12 +53,9 @@ public class Game {
         }
     }
 
-    public void start() {
+    public void start() throws IOException {
         System.out.println( "Welcome to game 'Monster'" );
 //        System.out.println( "Choose the difficulty: 1 - EASY, 2 - MEDIUM, 3 - HARD" );
-
-//        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader( System.in ) );
-//        bufferedReader.read();
 
         Player player = new Player( 3, 10, 10 );
 
@@ -72,9 +72,45 @@ public class Game {
 
         gameBoard = new char[17][27];
         refreshGameBoard( player );
-        player.move( MoveDirection.MoveDirectionOfCharacter.N );
-        refreshGameBoard( player );
+//        player.move( MoveDirection.MoveDirectionOfCharacter.N );
+//        refreshGameBoard( player );
 
+        BufferedReader directionReader = new BufferedReader( new InputStreamReader( System.in ) );
+        movePlayer( player, directionReader );
+        for (int i = 0; i < 10; i++) {
+            movePlayer( player,directionReader );
+        }
+    }
+
+    private void movePlayer(Player player, BufferedReader directionReader) throws IOException {
+
+        String direction = directionReader.readLine();
+        if (direction.equals( "8" )) {
+            player.move( MoveDirection.MoveDirectionOfCharacter.N );
+            refreshGameBoard( player );
+        } else if (direction.equals( "9" )) {
+            player.move( MoveDirection.MoveDirectionOfCharacter.NE );
+            refreshGameBoard( player );
+        } else if (direction.equals( "6" )) {
+            player.move( MoveDirection.MoveDirectionOfCharacter.E );
+            refreshGameBoard( player );
+        } else if (direction.equals( "3" )) {
+            player.move( MoveDirection.MoveDirectionOfCharacter.SE );
+            refreshGameBoard( player );
+        } else if (direction.equals( "2" )) {
+            player.move( MoveDirection.MoveDirectionOfCharacter.S );
+            refreshGameBoard( player );
+        } else if (direction.equals( "1" )) {
+            player.move( MoveDirection.MoveDirectionOfCharacter.SW );
+            refreshGameBoard( player );
+        } else if (direction.equals( "4" )) {
+            player.move( MoveDirection.MoveDirectionOfCharacter.W );
+            refreshGameBoard( player );
+        } else if (direction.equals( "7" )) {
+            player.move( MoveDirection.MoveDirectionOfCharacter.NW );
+            refreshGameBoard( player );
+        } else
+            refreshGameBoard( player );
     }
 
     private void refreshGameBoard(Player player) {
