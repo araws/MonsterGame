@@ -59,6 +59,8 @@ public class Game {
 
         Player player = new Player( 3, 10, 10 );
 
+        BufferedReader directionReader = new BufferedReader( new InputStreamReader( System.in ) );
+
         monsterList.add( new Monster( 3, 4 ) );
         monsterList.add( new Monster( 4, 6 ) );
         monsterList.add( new Monster( 6, 7 ) );
@@ -71,42 +73,62 @@ public class Game {
         monsterList.add( new Monster( 15, 23 ) );
 
         gameBoard = new char[17][27];
-        refreshGameBoard( player );
-//        player.move( MoveDirection.MoveDirectionOfCharacter.N );
-//        refreshGameBoard( player );
 
-        BufferedReader directionReader = new BufferedReader( new InputStreamReader( System.in ) );
-        movePlayer( player, directionReader );
+        refreshGameBoard( player );
+
         for (int i = 0; i < 10; i++) {
-            movePlayer( player,directionReader );
+            movePlayer( player, directionReader );
+            moveMonsterTowardPlayer( player );
+        }
+    }
+
+    private void moveMonsterTowardPlayer(Player player) {
+        for (Monster monster : monsterList) {
+            if ((monster.getPositionX() < player.getPositionX()) && (monster.getPositionY() < player.getPositionY())) {
+                monster.move( MoveDirection.MoveDirectionOfCharacter.SE );
+            } else if ((monster.getPositionX() < player.getPositionX()) && (monster.getPositionY() == player.getPositionY())) {
+                monster.move( MoveDirection.MoveDirectionOfCharacter.S );
+            } else if ((monster.getPositionX() < player.getPositionX()) && (monster.getPositionY() > player.getPositionY())) {
+                monster.move( MoveDirection.MoveDirectionOfCharacter.SW );
+            } else if ((monster.getPositionX() == player.getPositionX()) && (monster.getPositionY() > player.getPositionY())) {
+                monster.move( MoveDirection.MoveDirectionOfCharacter.W );
+            } else if ((monster.getPositionX() > player.getPositionX()) && (monster.getPositionY() > player.getPositionY())) {
+                monster.move( MoveDirection.MoveDirectionOfCharacter.NW );
+            } else if ((monster.getPositionX() > player.getPositionX()) && (monster.getPositionY() == player.getPositionY())) {
+                monster.move( MoveDirection.MoveDirectionOfCharacter.N );
+            } else if ((monster.getPositionX() > player.getPositionX()) && (monster.getPositionY() < player.getPositionY())) {
+                monster.move( MoveDirection.MoveDirectionOfCharacter.NE );
+            } else if ((monster.getPositionX() == player.getPositionX()) && (monster.getPositionY() < player.getPositionY())) {
+                monster.move( MoveDirection.MoveDirectionOfCharacter.E );
+            }
         }
     }
 
     private void movePlayer(Player player, BufferedReader directionReader) throws IOException {
 
-        String direction = directionReader.readLine();
-        if (direction.equals( "8" )) {
+        String keyBoardDirection = directionReader.readLine();
+        if (keyBoardDirection.equals( "8" )) {
             player.move( MoveDirection.MoveDirectionOfCharacter.N );
             refreshGameBoard( player );
-        } else if (direction.equals( "9" )) {
+        } else if (keyBoardDirection.equals( "9" )) {
             player.move( MoveDirection.MoveDirectionOfCharacter.NE );
             refreshGameBoard( player );
-        } else if (direction.equals( "6" )) {
+        } else if (keyBoardDirection.equals( "6" )) {
             player.move( MoveDirection.MoveDirectionOfCharacter.E );
             refreshGameBoard( player );
-        } else if (direction.equals( "3" )) {
+        } else if (keyBoardDirection.equals( "3" )) {
             player.move( MoveDirection.MoveDirectionOfCharacter.SE );
             refreshGameBoard( player );
-        } else if (direction.equals( "2" )) {
+        } else if (keyBoardDirection.equals( "2" )) {
             player.move( MoveDirection.MoveDirectionOfCharacter.S );
             refreshGameBoard( player );
-        } else if (direction.equals( "1" )) {
+        } else if (keyBoardDirection.equals( "1" )) {
             player.move( MoveDirection.MoveDirectionOfCharacter.SW );
             refreshGameBoard( player );
-        } else if (direction.equals( "4" )) {
+        } else if (keyBoardDirection.equals( "4" )) {
             player.move( MoveDirection.MoveDirectionOfCharacter.W );
             refreshGameBoard( player );
-        } else if (direction.equals( "7" )) {
+        } else if (keyBoardDirection.equals( "7" )) {
             player.move( MoveDirection.MoveDirectionOfCharacter.NW );
             refreshGameBoard( player );
         } else
