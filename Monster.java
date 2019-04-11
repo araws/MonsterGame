@@ -1,9 +1,13 @@
 package projects.monsterGame;
 
-public class Monster extends Character {
+class Monster extends Character {
 
-    public Monster( int positionX, int positionY) {
+    Monster( int positionX, int positionY) {
         super( 1, positionX, positionY );
     }
 
+    @Override
+    public void move(MoveDirection.MoveDirectionOfCharacter dir) {
+        super.move( dir );
+    }
 }

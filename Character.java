@@ -1,8 +1,8 @@
 package projects.monsterGame;
 
-import java.awt.*;
+import projects.monsterGame.MoveDirection.MoveDirectionOfCharacter;
 
-public class Character {
+public class Character implements Movable {
 
     private int liveQuantity;
 
@@ -23,42 +23,42 @@ public class Character {
         return positionY;
     }
 
-
-    public void move(MoveDirection.MoveDirectionOfCharacter dir){
+    @Override
+    public void move(MoveDirectionOfCharacter dir){
 
         switch (dir) {
 
             case N:
-                this.positionX += MoveDirection.MoveDirectionOfCharacter.N.getChangeDirectionX();
-                this.positionY += MoveDirection.MoveDirectionOfCharacter.N.getChangeDirectionY();
+                this.positionX += MoveDirectionOfCharacter.N.getChangeDirectionX();
+                this.positionY += MoveDirectionOfCharacter.N.getChangeDirectionY();
                 break;
             case NE:
-                this.positionX += MoveDirection.MoveDirectionOfCharacter.NE.getChangeDirectionX();
-                this.positionY += MoveDirection.MoveDirectionOfCharacter.NE.getChangeDirectionY();
+                this.positionX += MoveDirectionOfCharacter.NE.getChangeDirectionX();
+                this.positionY += MoveDirectionOfCharacter.NE.getChangeDirectionY();
                 break;
             case E:
-                this.positionX += MoveDirection.MoveDirectionOfCharacter.E.getChangeDirectionX();
-                this.positionY += MoveDirection.MoveDirectionOfCharacter.E.getChangeDirectionY();
+                this.positionX += MoveDirectionOfCharacter.E.getChangeDirectionX();
+                this.positionY += MoveDirectionOfCharacter.E.getChangeDirectionY();
                 break;
             case SE:
-                this.positionX += MoveDirection.MoveDirectionOfCharacter.SE.getChangeDirectionX();
-                this.positionY += MoveDirection.MoveDirectionOfCharacter.SE.getChangeDirectionY();
+                this.positionX += MoveDirectionOfCharacter.SE.getChangeDirectionX();
+                this.positionY += MoveDirectionOfCharacter.SE.getChangeDirectionY();
                 break;
             case S:
-                this.positionX += MoveDirection.MoveDirectionOfCharacter.S.getChangeDirectionX();
-                this.positionY += MoveDirection.MoveDirectionOfCharacter.S.getChangeDirectionY();
+                this.positionX += MoveDirectionOfCharacter.S.getChangeDirectionX();
+                this.positionY += MoveDirectionOfCharacter.S.getChangeDirectionY();
                 break;
             case SW:
-                this.positionX += MoveDirection.MoveDirectionOfCharacter.SW.getChangeDirectionX();
-                this.positionY += MoveDirection.MoveDirectionOfCharacter.SW.getChangeDirectionY();
+                this.positionX += MoveDirectionOfCharacter.SW.getChangeDirectionX();
+                this.positionY += MoveDirectionOfCharacter.SW.getChangeDirectionY();
                 break;
             case W:
-                this.positionX += MoveDirection.MoveDirectionOfCharacter.W.getChangeDirectionX();
-                this.positionY += MoveDirection.MoveDirectionOfCharacter.W.getChangeDirectionY();
+                this.positionX += MoveDirectionOfCharacter.W.getChangeDirectionX();
+                this.positionY += MoveDirectionOfCharacter.W.getChangeDirectionY();
                 break;
             case NW:
-                this.positionX += MoveDirection.MoveDirectionOfCharacter.NW.getChangeDirectionX();
-                this.positionY += MoveDirection.MoveDirectionOfCharacter.NW.getChangeDirectionY();
+                this.positionX += MoveDirectionOfCharacter.NW.getChangeDirectionX();
+                this.positionY += MoveDirectionOfCharacter.NW.getChangeDirectionY();
                 break;
         }
     }
