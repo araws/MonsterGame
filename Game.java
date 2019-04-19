@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Game {
@@ -22,24 +23,51 @@ public class Game {
 
         BufferedReader directionReader = new BufferedReader( new InputStreamReader( System.in ) );
 
-        monsterList.add( new Monster( 3, 4 ) );
-        monsterList.add( new Monster( 4, 6 ) );
-        monsterList.add( new Monster( 6, 7 ) );
-        monsterList.add( new Monster( 8, 22 ) );
-        monsterList.add( new Monster( 9, 19 ) );
-        monsterList.add( new Monster( 11, 21 ) );
-        monsterList.add( new Monster( 13, 2 ) );
-        monsterList.add( new Monster( 14, 7 ) );
-        monsterList.add( new Monster( 14, 5 ) );
-        monsterList.add( new Monster( 15, 23 ) );
+        monsterList.add( new Monster( 1, 3, 4 ) );
+        monsterList.add( new Monster( 1, 6, 7 ) );
+        monsterList.add( new Monster( 1, 4, 6 ) );
+        monsterList.add( new Monster( 1, 8, 22 ) );
+        monsterList.add( new Monster( 1, 9, 19 ) );
+        monsterList.add( new Monster( 1, 11, 21 ) );
+        monsterList.add( new Monster( 1, 13, 2 ) );
+        monsterList.add( new Monster( 1, 14, 7 ) );
+        monsterList.add( new Monster( 1, 14, 5 ) );
+        monsterList.add( new Monster( 1, 15, 23 ) );
 
         gameBoard = new char[17][27];
 
         refreshGameBoard( player );
 
-        while(true) {
+        while (player.getLiveQuantity() > 0) {
             movePlayer( player, directionReader );
             moveMonsterTowardPlayer( player );
+
+            for (Iterator<Monster> monsterIterator = monsterList.iterator(); monsterIterator.hasNext(); ) {
+                Monster monster = monsterIterator.next();
+                if ((monster.getPositionX() == player.getPositionX()) && (monster.getPositionY() == player.getPositionY())) {
+                    player.beingKilled();
+                    if (player.getLiveQuantity() == 0) {
+                        System.err.println( "YOU'VE LOST!!!!!" );
+                    } else {
+                        System.out.println( "jeszczenie koniec" );
+                    }
+                    monster.beingKilled();
+                    if (monster.getLiveQuantity() == 0) {
+                        monsterIterator.remove();
+                    }
+
+                    System.out.println( monsterList );
+
+                    System.out.println( player.getLiveQuantity() );
+                }
+                if ((monster.getPositionX() == monster.getPositionX()) && (monster.getPositionY() == monster.getPositionY())) {
+                    monster.beingKilled();
+                    if (monster.getLiveQuantity() == 0) {
+                        monsterIterator.remove();
+                    }
+                }
+            }
+
             refreshGameBoard( player );
         }
     }
@@ -76,7 +104,7 @@ public class Game {
         String keyBoardDirection = directionReader.readLine();
         switch (keyBoardDirection) {
             case "8":
-               player.move( MoveDirectionOfCharacter.N );
+                player.move( MoveDirectionOfCharacter.N );
                 break;
             case "9":
                 player.move( MoveDirectionOfCharacter.NE );
@@ -122,8 +150,10 @@ public class Game {
                 }
 
                 for (Monster monster : monsterList) {
-                    if ((row == monster.getPositionX()) && (column == monster.getPositionY())) {
-                        gameBoard[row][column] = 'M';
+                    if (monster.getLiveQuantity() != 0) {
+                        if ((row == monster.getPositionX()) && (column == monster.getPositionY())) {
+                            gameBoard[row][column] = 'M';
+                        }
                     }
                 }
                 System.out.print( gameBoard[row][column] );
