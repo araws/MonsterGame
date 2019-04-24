@@ -2,7 +2,7 @@ package projects.monsterGame;
 
 import projects.monsterGame.MoveDirection.MoveDirectionOfCharacter;
 
-public class Character implements Movable {
+public class Character implements Movable, Killable {
 
     private int liveQuantity;
 
@@ -23,8 +23,16 @@ public class Character implements Movable {
         return positionY;
     }
 
+    public void setLiveQuantity(int liveQuantity) {
+        this.liveQuantity = liveQuantity;
+    }
+
+    public int getLiveQuantity() {
+        return liveQuantity;
+    }
+
     @Override
-    public void move(MoveDirectionOfCharacter dir){
+    public void move(MoveDirectionOfCharacter dir) {
 
         switch (dir) {
 
@@ -61,5 +69,10 @@ public class Character implements Movable {
                 this.positionY += MoveDirectionOfCharacter.NW.getChangeDirectionY();
                 break;
         }
+    }
+
+    @Override
+    public void beingKilled() {
+        setLiveQuantity( this.liveQuantity += KILL );
     }
 }
