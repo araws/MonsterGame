@@ -19,16 +19,24 @@ public class Character implements Movable, Killable {
         return positionX;
     }
 
+    public void setPositionX(int positionX) {
+        this.positionX = positionX;
+    }
+
     public int getPositionY() {
         return positionY;
     }
 
-    public void setLiveQuantity(int liveQuantity) {
-        this.liveQuantity = liveQuantity;
+    public void setPositionY(int positionY) {
+        this.positionY = positionY;
     }
 
     public int getLiveQuantity() {
         return liveQuantity;
+    }
+
+    public void setLiveQuantity(int liveQuantity) {
+        this.liveQuantity = liveQuantity;
     }
 
     @Override
