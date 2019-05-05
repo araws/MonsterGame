@@ -1,5 +1,3 @@
-package projects.monsterGame;
-
 public class Player extends Character {
 
     Player(int liveQuantity, int positionX, int positionY) {

@@ -1,9 +1,7 @@
-package projects.monsterGame;
-
 class Monster extends Character {
 
-    Monster( int liveQuantity, int positionX, int positionY) {
-        super( liveQuantity, positionX, positionY );
+    Monster( int positionX, int positionY) {
+        super( 1, positionX, positionY );
     }
 
     @Override

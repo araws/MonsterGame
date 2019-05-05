@@ -1,5 +1,3 @@
-package projects.monsterGame;
-
 public class MoveDirection {
 
     public enum MoveDirectionOfCharacter {

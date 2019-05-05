@@ -1,5 +1,3 @@
-//package projects.monsterGame;
-//
 //class Menu {
 //
 //    public enum GameDifficulty {

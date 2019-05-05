@@ -1,7 +1,3 @@
-package projects.monsterGame;
-
-import projects.monsterGame.MoveDirection.MoveDirectionOfCharacter;
-
 public class Character implements Movable, Killable {
 
     private int liveQuantity;

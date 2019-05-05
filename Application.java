@@ -1,5 +1,3 @@
-package projects.monsterGame;
-
 import java.io.IOException;
 
 public class Application {
