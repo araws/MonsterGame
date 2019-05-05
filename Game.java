@@ -57,6 +57,7 @@ public class Game {
                 if (player.getLiveQuantity() == 0) {
                     System.err.println( "YOU'VE LOST!!!!!" );
                 } else {
+                    player.flyToRandomPoint();
                     System.out.println( "jeszcze nie koniec" );
                 }
                 monster.looseLive();
@@ -83,6 +84,10 @@ public class Game {
             System.out.println( player.getLiveQuantity() );
         }
         monsterList.removeAll( monsterToKillList );
+
+        if (monsterList.isEmpty()){
+            System.err.println("VICTORY!!!");
+        }
 
         refreshGameBoard( player );
     }
@@ -124,25 +129,42 @@ public class Game {
                 }
                 break;
             case "9":
-                player.move( MoveDirectionOfCharacter.NE );
+                if ((player.getPositionX() > 1) && (player.getPositionY() < 25)) {
+                    player.move( MoveDirectionOfCharacter.NE );
+                }
                 break;
             case "6":
-                player.move( MoveDirectionOfCharacter.E );
+                if (player.getPositionY() < 25) {
+                    player.move( MoveDirectionOfCharacter.E );
+                }
                 break;
             case "3":
-                player.move( MoveDirectionOfCharacter.SE );
+                if ((player.getPositionX() < 15) && (player.getPositionY() < 25)) {
+                    player.move( MoveDirectionOfCharacter.SE );
+                }
                 break;
             case "2":
-                player.move( MoveDirectionOfCharacter.S );
+                if (player.getPositionX() < 15) {
+                    player.move( MoveDirectionOfCharacter.S );
+                }
                 break;
             case "1":
-                player.move( MoveDirectionOfCharacter.SW );
+                if ((player.getPositionX() < 15) && (player.getPositionY() > 1)) {
+                    player.move( MoveDirectionOfCharacter.SW );
+                }
                 break;
             case "4":
-                player.move( MoveDirectionOfCharacter.W );
+                if (player.getPositionY() > 1) {
+                    player.move( MoveDirectionOfCharacter.W );
+                }
                 break;
             case "7":
-                player.move( MoveDirectionOfCharacter.NW );
+                if ((player.getPositionX() > 1) && (player.getPositionY() > 1)) {
+                    player.move( MoveDirectionOfCharacter.NW );
+                }
+                break;
+            case "5":
+                player.flyToRandomPoint();
                 break;
         }
     }
