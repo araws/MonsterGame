@@ -1,11 +1,10 @@
 package monsterGame;
 
-import static monsterGame.MoveDirection.*;
+import static monsterGame.MoveDirection.MoveDirectionOfCharacter;
 
 public class Character implements Movable, Killable {
 
     private int liveQuantity;
-
     private int positionX;
     private int positionY;
 
