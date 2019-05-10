@@ -1,13 +1,14 @@
 package monsterGame;
 
 public class GameBoard {
+    private int heightWithoutFrame;
+    private int widthWithoutFrame;
     private int heightWithFrame;
     private int widthWithFrame;
     private int lastRowBeforeFrame;
     private int lastColumnBeforeFrame;
     private int lastRowWithFrame;
     private int lastColumnWithFrame;
-
 
     private static final int FRAME = 2;
 
@@ -17,6 +18,8 @@ public class GameBoard {
     public GameBoard(GameDifficulty gameDifficulty) {
         switch (gameDifficulty) {
             case EASY:
+                this.heightWithoutFrame = GameDifficulty.EASY.getBoardHeight();
+                this.widthWithoutFrame = GameDifficulty.EASY.getBoardWidth();
                 this.heightWithFrame = GameDifficulty.EASY.getBoardHeight() + FRAME;
                 this.widthWithFrame = GameDifficulty.EASY.getBoardWidth() + FRAME;
                 this.lastRowBeforeFrame = GameDifficulty.EASY.getBoardHeight();
@@ -25,6 +28,8 @@ public class GameBoard {
                 this.lastColumnWithFrame = GameDifficulty.EASY.getBoardWidth() + 1;
                 break;
             case MEDIUM:
+                this.heightWithoutFrame = GameDifficulty.MEDIUM.getBoardHeight();
+                this.widthWithoutFrame = GameDifficulty.MEDIUM.getBoardWidth();
                 this.heightWithFrame = GameDifficulty.MEDIUM.getBoardHeight() + FRAME;
                 this.widthWithFrame = GameDifficulty.MEDIUM.getBoardWidth() + FRAME;
                 this.lastRowBeforeFrame = GameDifficulty.MEDIUM.getBoardHeight();
@@ -33,6 +38,8 @@ public class GameBoard {
                 this.lastColumnWithFrame = GameDifficulty.MEDIUM.getBoardWidth() + 1;
                 break;
             case HARD:
+                this.heightWithoutFrame = GameDifficulty.HARD.getBoardHeight();
+                this.widthWithoutFrame = GameDifficulty.HARD.getBoardWidth();
                 this.heightWithFrame = GameDifficulty.HARD.getBoardHeight() + FRAME;
                 this.widthWithFrame = GameDifficulty.HARD.getBoardWidth() + FRAME;
                 this.lastRowBeforeFrame = GameDifficulty.HARD.getBoardHeight();
@@ -41,6 +48,14 @@ public class GameBoard {
                 this.lastColumnWithFrame = GameDifficulty.HARD.getBoardWidth() + 1;
                 break;
         }
+    }
+
+    public int getHeightWithoutFrame() {
+        return heightWithoutFrame;
+    }
+
+    public int getWidthWithoutFrame() {
+        return widthWithoutFrame;
     }
 
     public int getHeightWithFrame() {
