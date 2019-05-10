@@ -19,28 +19,36 @@ public class Game {
     private List<Monster> monsterList = new ArrayList<>();
     private List<Monster> monsterToKillList = new ArrayList<>();
 
+    private Player randomPlayer = new Player();
+    private Monster monster = new Monster();
     private Random random = new Random();
 
     private char[][] gameBoard = null;
 
     public void start() throws IOException {
         System.out.println( "Welcome to game 'Monster'" );
-//        System.out.println( "Choose the difficulty: 1 - EASY, 2 - MEDIUM, 3 - HARD" );
-
-        Player player = new Player( 3, 6, 24 );
+        System.out.println( "Choose the difficulty: 1 - EASY, 2 - MEDIUM, 3 - HARD" );
 
         BufferedReader directionReader = new BufferedReader( new InputStreamReader( System.in ) );
 
-        monsterList.add( new Monster( 1, 6 ) );
-        monsterList.add( new Monster( 3, 9 ) );
-        monsterList.add( new Monster( 2, 3 ) );
-        monsterList.add( new Monster( 5, 2 ) );
-        monsterList.add( new Monster( 6, 8 ) );
-        monsterList.add( new Monster( 8, 22 ) );
-        monsterList.add( new Monster( 8, 14 ) );
-        monsterList.add( new Monster( 9, 12 ) );
-        monsterList.add( new Monster( 10, 12 ) );
-        monsterList.add( new Monster( 11, 14 ) );
+        String keyChosenDifficulty = directionReader.readLine();
+        switch (keyChosenDifficulty) {
+            case "1":
+                chosenGameDifficulty = GameDifficulty.EASY;
+                break;
+            case "2":
+                chosenGameDifficulty = GameDifficulty.MEDIUM;
+                break;
+            case "3":
+                chosenGameDifficulty = GameDifficulty.HARD;
+                break;
+        }
+
+        Player player = new Player( chosenGameDifficulty.getNumberOfPlayerLives(), randomlySetPlayerPositionX( randomPlayer ), randomlySetPlayerPositionY( randomPlayer ) );
+
+        for (int i = 0; i < chosenGameDifficulty.getNumberOfMonster(); i++) {
+            monsterList.add( new Monster( randomlySetMonsterPositionX( monster ), randomlySetMonsterPositionY( monster ) ) );
+        }
 
         gameBoard = new char[gameBoardLogic.getHeightWithFrame()][gameBoardLogic.getWidthWithFrame()];
 
@@ -63,9 +71,9 @@ public class Game {
                 player.looseLive();
                 if (player.getLiveQuantity() == 0) {
                     System.err.println( "YOU'VE LOST!!!!!" );
+                    break;
                 } else {
                     randomlySetPlayerPosition( player );
-                    System.out.println( "jeszcze nie koniec" );
                 }
                 monster.looseLive();
                 if (monster.getLiveQuantity() == 0) {
@@ -134,52 +142,52 @@ public class Game {
             case "8":
                 if (player.getPositionX() > GameBoard.getFirstColumnAfterFrame()) {
                     player.move( MoveDirectionOfCharacter.N );
-                }
+                } else movePlayer( player, directionReader );
                 break;
             case "9":
                 if ((player.getPositionX() > GameBoard.getFirstColumnAfterFrame())
                         && (player.getPositionY() < gameBoardLogic.getLastColumnBeforeFrame())) {
                     player.move( MoveDirectionOfCharacter.NE );
-                }
+                } else movePlayer( player, directionReader );
                 break;
             case "6":
                 if (player.getPositionY() < gameBoardLogic.getLastColumnBeforeFrame()) {
                     player.move( MoveDirectionOfCharacter.E );
-                }
+                } else movePlayer( player, directionReader );
                 break;
             case "3":
                 if ((player.getPositionX() < gameBoardLogic.getLastRowBeforeFrame())
                         && (player.getPositionY() < gameBoardLogic.getLastColumnBeforeFrame())) {
                     player.move( MoveDirectionOfCharacter.SE );
-                }
+                } else movePlayer( player, directionReader );
                 break;
             case "2":
                 if (player.getPositionX() < gameBoardLogic.getLastRowBeforeFrame()) {
                     player.move( MoveDirectionOfCharacter.S );
-                }
+                } else movePlayer( player, directionReader );
                 break;
             case "1":
                 if ((player.getPositionX() < gameBoardLogic.getLastRowBeforeFrame())
                         && (player.getPositionY() > GameBoard.getFirstRowAfterFrame())) {
                     player.move( MoveDirectionOfCharacter.SW );
-                }
+                } else movePlayer( player, directionReader );
                 break;
             case "4":
                 if (player.getPositionY() > GameBoard.getFirstRowAfterFrame()) {
                     player.move( MoveDirectionOfCharacter.W );
-                }
+                } else movePlayer( player, directionReader );
                 break;
             case "7":
                 if ((player.getPositionX() > GameBoard.getFirstColumnAfterFrame())
                         && (player.getPositionY() > GameBoard.getFirstRowAfterFrame())) {
                     player.move( MoveDirectionOfCharacter.NW );
-                }
+                } else movePlayer( player, directionReader );
                 break;
             case "5":
                 if (randomFlyingCounter > 0) {
                     randomlySetPlayerPosition( player );
                     randomFlyingCounter--;
-                }
+                } else movePlayer( player, directionReader );
                 break;
         }
     }
@@ -223,13 +231,29 @@ public class Game {
     }
 
     public void randomlySetPlayerPosition(Player player) {
-        player.setPositionX( random.nextInt( gameBoardLogic.getLastRowWithFrame() ) );
-        player.setPositionY( random.nextInt( gameBoardLogic.getLastColumnWithFrame() ) );
+        randomlySetPlayerPositionX( player );
+        randomlySetPlayerPositionY( player );
+    }
+
+    public int randomlySetPlayerPositionX(Player player) {
+        return player.setPositionX( random.nextInt( gameBoardLogic.getHeightWithoutFrame() ) + 1 );
+    }
+
+    public int randomlySetPlayerPositionY(Player player) {
+        return player.setPositionY( random.nextInt( gameBoardLogic.getWidthWithoutFrame() ) + 1 );
     }
 
     public void randomlySetMonsterPosition(Monster monster) {
-        monster.setPositionX( random.nextInt( gameBoardLogic.getLastRowWithFrame() ) );
-        monster.setPositionY( random.nextInt( gameBoardLogic.getLastColumnWithFrame() ) );
+        randomlySetMonsterPositionX( monster );
+        randomlySetMonsterPositionY( monster );
+    }
+
+    public int randomlySetMonsterPositionX(Monster monster) {
+        return monster.setPositionX( random.nextInt( gameBoardLogic.getHeightWithoutFrame() ) + 1 );
+    }
+
+    public int randomlySetMonsterPositionY(Monster monster) {
+        return monster.setPositionY( random.nextInt( gameBoardLogic.getWidthWithoutFrame() ) + 1 );
     }
 }
 
