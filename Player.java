@@ -1,10 +1,10 @@
 package monsterGame;
 
-import java.util.Random;
-
 public class Player extends Character {
 
-    private Random random = new Random();
+    Player() {
+
+    }
 
     Player(int liveQuantity, int positionX, int positionY) {
         super( liveQuantity, positionX, positionY );

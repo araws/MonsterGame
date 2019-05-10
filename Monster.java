@@ -2,7 +2,11 @@ package monsterGame;
 
 class Monster extends Character {
 
-    Monster( int positionX, int positionY) {
+    Monster() {
+
+    }
+
+    Monster(int positionX, int positionY) {
         super( 1, positionX, positionY );
     }
 

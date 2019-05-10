@@ -8,6 +8,10 @@ public class Character implements Movable, Killable {
     private int positionX;
     private int positionY;
 
+    Character (){
+
+    }
+
     public Character(int liveQuantity, int positionX, int positionY) {
         this.liveQuantity = liveQuantity;
         this.positionX = positionX;
@@ -18,16 +22,18 @@ public class Character implements Movable, Killable {
         return positionX;
     }
 
-    public void setPositionX(int positionX) {
+    public int setPositionX(int positionX) {
         this.positionX = positionX;
+        return positionX;
     }
 
     public int getPositionY() {
         return positionY;
     }
 
-    public void setPositionY(int positionY) {
+    public int setPositionY(int positionY) {
         this.positionY = positionY;
+        return positionY;
     }
 
     public int getLiveQuantity() {
