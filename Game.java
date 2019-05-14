@@ -12,6 +12,7 @@ import static monsterGame.MoveDirection.MoveDirectionOfCharacter;
 
 public class Game {
 
+    private GameDifficulty gameDifficulty;
     private GameDifficulty chosenGameDifficulty = GameDifficulty.EASY;
     private GameBoard gameBoardLogic = new GameBoard( chosenGameDifficulty );
     private int randomFlyingCounter = chosenGameDifficulty.getNumberOfJumps();
@@ -25,24 +26,33 @@ public class Game {
 
     private char[][] gameBoard = null;
 
-    public void start() throws IOException {
+    public GameDifficulty runMenu() throws IOException {
+
         System.out.println( "Welcome to game 'Monster'" );
         System.out.println( "Choose the difficulty: 1 - EASY, 2 - MEDIUM, 3 - HARD" );
 
         BufferedReader directionReader = new BufferedReader( new InputStreamReader( System.in ) );
-
         String keyChosenDifficulty = directionReader.readLine();
         switch (keyChosenDifficulty) {
             case "1":
-                chosenGameDifficulty = GameDifficulty.EASY;
+                gameDifficulty = GameDifficulty.EASY;
                 break;
             case "2":
-                chosenGameDifficulty = GameDifficulty.MEDIUM;
+                gameDifficulty = GameDifficulty.MEDIUM;
                 break;
             case "3":
-                chosenGameDifficulty = GameDifficulty.HARD;
+                gameDifficulty = GameDifficulty.HARD;
                 break;
         }
+        chosenGameDifficulty = gameDifficulty;
+        return chosenGameDifficulty;
+    }
+
+    public void start() throws IOException {
+
+        System.out.println("wybranna trudność" + chosenGameDifficulty);
+
+        BufferedReader directionReader = new BufferedReader( new InputStreamReader( System.in ) );
 
         Player player = new Player( chosenGameDifficulty.getNumberOfPlayerLives(), randomlySetPlayerPositionX( randomPlayer ), randomlySetPlayerPositionY( randomPlayer ) );
 
