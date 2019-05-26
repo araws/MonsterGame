@@ -15,7 +15,7 @@ public class Game {
     private GameDifficulty chosenGameDifficulty;
     private GameBoard gameBoard;
 
-    private int numberOfJumpsLeft;
+    private int numberOfPlayerJumpsLeft;
 
     private List<Monster> monsterList = new ArrayList<>();
     private List<Monster> monsterToKillList = new ArrayList<>();
@@ -65,7 +65,7 @@ public class Game {
                 break;
         }
         gameBoard = new GameBoard(chosenGameDifficulty);
-        numberOfJumpsLeft = chosenGameDifficulty.getNumberOfJumps();
+        numberOfPlayerJumpsLeft = chosenGameDifficulty.getNumberOfJumps();
         return chosenGameDifficulty;
     }
 
@@ -194,9 +194,9 @@ public class Game {
                 } else movePlayer(player, directionReader);
                 break;
             case "5":
-                if (numberOfJumpsLeft > 0) {
+                if (numberOfPlayerJumpsLeft > 0) {
                     randomlySetPlayerPosition(player);
-                    numberOfJumpsLeft--;
+                    numberOfPlayerJumpsLeft--;
                 } else movePlayer(player, directionReader);
                 break;
         }
