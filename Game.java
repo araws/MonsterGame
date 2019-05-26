@@ -18,7 +18,7 @@ public class Game {
     private int numberOfPlayerJumpsLeft;
 
     private List<Monster> monsterList = new ArrayList<>();
-    private List<Monster> monsterToKillList = new ArrayList<>();
+
 
     private Player player = new Player();
     private Monster monster = new Monster();
@@ -72,6 +72,7 @@ public class Game {
     private void gameLoop(Player player, BufferedReader directionReader) throws IOException {
 
         movePlayer(player, directionReader);
+        List<Monster> monsterToKillList = new ArrayList<>();
 
         moveMonsterTowardPlayer(player);
 
