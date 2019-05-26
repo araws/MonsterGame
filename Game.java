@@ -12,19 +12,43 @@ import static monsterGame.MoveDirection.MoveDirectionOfCharacter;
 
 public class Game {
 
-    private GameDifficulty gameDifficulty;
-    private GameDifficulty chosenGameDifficulty = GameDifficulty.EASY;
-    private GameBoard gameBoardLogic = new GameBoard( chosenGameDifficulty );
-    private int randomFlyingCounter = chosenGameDifficulty.getNumberOfJumps();
+    private GameDifficulty chosenGameDifficulty;
+
+    private GameBoard gameBoardLogic;
+    private char[][] gameBoard = null;
+
+    private int numberOfJumpsLeft;
 
     private List<Monster> monsterList = new ArrayList<>();
     private List<Monster> monsterToKillList = new ArrayList<>();
 
-    private Player randomPlayer = new Player();
+    private Player player = new Player();
     private Monster monster = new Monster();
     private Random random = new Random();
 
-    private char[][] gameBoard = null;
+
+    public void start() throws IOException {
+
+        runMenu();
+
+        System.out.println("Chosen difficulty: " + chosenGameDifficulty);
+
+        BufferedReader directionReader = new BufferedReader( new InputStreamReader( System.in ) );
+
+        Player tempPlayer = new Player( chosenGameDifficulty.getNumberOfPlayerLives(), randomlySetPlayerPositionX(player), randomlySetPlayerPositionY(player) );
+
+        for (int i = 0; i < chosenGameDifficulty.getNumberOfMonster(); i++) {
+            monsterList.add( new Monster( randomlySetMonsterPositionX( monster ), randomlySetMonsterPositionY( monster ) ) );
+        }
+
+        gameBoard = new char[gameBoardLogic.getHeightWithFrame()][gameBoardLogic.getWidthWithFrame()];
+
+        refreshGameBoard( tempPlayer );
+
+        while ((tempPlayer.getLiveQuantity() > 0) && (!monsterList.isEmpty())) {
+            gameLoop( tempPlayer, directionReader );
+        }
+    }
 
     public GameDifficulty runMenu() throws IOException {
 
@@ -35,38 +59,18 @@ public class Game {
         String keyChosenDifficulty = directionReader.readLine();
         switch (keyChosenDifficulty) {
             case "1":
-                gameDifficulty = GameDifficulty.EASY;
+                chosenGameDifficulty = GameDifficulty.EASY;
                 break;
             case "2":
-                gameDifficulty = GameDifficulty.MEDIUM;
+                chosenGameDifficulty = GameDifficulty.MEDIUM;
                 break;
             case "3":
-                gameDifficulty = GameDifficulty.HARD;
+                chosenGameDifficulty = GameDifficulty.HARD;
                 break;
         }
-        chosenGameDifficulty = gameDifficulty;
+        gameBoardLogic = new GameBoard(chosenGameDifficulty);
+        numberOfJumpsLeft = chosenGameDifficulty.getNumberOfJumps();
         return chosenGameDifficulty;
-    }
-
-    public void start() throws IOException {
-
-        System.out.println("wybranna trudność" + chosenGameDifficulty);
-
-        BufferedReader directionReader = new BufferedReader( new InputStreamReader( System.in ) );
-
-        Player player = new Player( chosenGameDifficulty.getNumberOfPlayerLives(), randomlySetPlayerPositionX( randomPlayer ), randomlySetPlayerPositionY( randomPlayer ) );
-
-        for (int i = 0; i < chosenGameDifficulty.getNumberOfMonster(); i++) {
-            monsterList.add( new Monster( randomlySetMonsterPositionX( monster ), randomlySetMonsterPositionY( monster ) ) );
-        }
-
-        gameBoard = new char[gameBoardLogic.getHeightWithFrame()][gameBoardLogic.getWidthWithFrame()];
-
-        refreshGameBoard( player );
-
-        while ((player.getLiveQuantity() > 0) && (!monsterList.isEmpty())) {
-            gameLoop( player, directionReader );
-        }
     }
 
     private void gameLoop(Player player, BufferedReader directionReader) throws IOException {
@@ -84,6 +88,7 @@ public class Game {
                     break;
                 } else {
                     randomlySetPlayerPosition( player );
+                    System.err.println("Quantity of lives left: " + player.getLiveQuantity());
                 }
                 monster.looseLive();
                 if (monster.getLiveQuantity() == 0) {
@@ -106,7 +111,6 @@ public class Game {
                 }
 
             }
-            System.out.println( player.getLiveQuantity() );
         }
         monsterList.removeAll( monsterToKillList );
 
@@ -194,9 +198,9 @@ public class Game {
                 } else movePlayer( player, directionReader );
                 break;
             case "5":
-                if (randomFlyingCounter > 0) {
+                if (numberOfJumpsLeft > 0) {
                     randomlySetPlayerPosition( player );
-                    randomFlyingCounter--;
+                    numberOfJumpsLeft--;
                 } else movePlayer( player, directionReader );
                 break;
         }
@@ -264,46 +268,5 @@ public class Game {
 
     public int randomlySetMonsterPositionY(Monster monster) {
         return monster.setPositionY( random.nextInt( gameBoardLogic.getWidthWithoutFrame() ) + 1 );
-    }
-}
-
-enum GameDifficulty {
-    EASY( 25, 15, 10, 4, 3 ),
-    MEDIUM( 35, 18, 20, 3, 2 ),
-    HARD( 50, 23, 30, 2, 1 );
-
-    private int boardWidth;
-    private int boardHeight;
-    private int numberOfMonster;
-    private int numberOfPlayerLives;
-    private int numberOfJumps;
-
-
-    GameDifficulty(int boardWidth, int boardHeight, int numberOfMonster, int numberOfPlayerLives, int numberOfJumps) {
-        this.boardWidth = boardWidth;
-        this.boardHeight = boardHeight;
-        this.numberOfMonster = numberOfMonster;
-        this.numberOfPlayerLives = numberOfPlayerLives;
-        this.numberOfJumps = numberOfJumps;
-    }
-
-    public int getBoardWidth() {
-        return boardWidth;
-    }
-
-    public int getBoardHeight() {
-        return boardHeight;
-    }
-
-    public int getNumberOfMonster() {
-        return numberOfMonster;
-    }
-
-    public int getNumberOfPlayerLives() {
-        return numberOfPlayerLives;
-    }
-
-    public int getNumberOfJumps() {
-        return numberOfJumps;
     }
 }
