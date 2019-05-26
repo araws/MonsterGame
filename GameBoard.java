@@ -1,6 +1,8 @@
 package monsterGame;
 
 public class GameBoard {
+    public char[][] gameBoardPicture = new char[getHeightWithFrame()][getWidthWithFrame()];
+
     private int heightWithoutFrame;
     private int widthWithoutFrame;
     private int heightWithFrame;

@@ -13,9 +13,7 @@ import static monsterGame.MoveDirection.MoveDirectionOfCharacter;
 public class Game {
 
     private GameDifficulty chosenGameDifficulty;
-
-    private GameBoard gameBoardLogic;
-    private char[][] gameBoard = null;
+    private GameBoard gameBoard;
 
     private int numberOfJumpsLeft;
 
@@ -33,29 +31,27 @@ public class Game {
 
         System.out.println("Chosen difficulty: " + chosenGameDifficulty);
 
-        BufferedReader directionReader = new BufferedReader( new InputStreamReader( System.in ) );
+        BufferedReader directionReader = new BufferedReader(new InputStreamReader(System.in));
 
-        Player tempPlayer = new Player( chosenGameDifficulty.getNumberOfPlayerLives(), randomlySetPlayerPositionX(player), randomlySetPlayerPositionY(player) );
+        Player tempPlayer = new Player(chosenGameDifficulty.getNumberOfPlayerLives(), randomlySetPlayerPositionX(player), randomlySetPlayerPositionY(player));
 
         for (int i = 0; i < chosenGameDifficulty.getNumberOfMonster(); i++) {
-            monsterList.add( new Monster( randomlySetMonsterPositionX( monster ), randomlySetMonsterPositionY( monster ) ) );
+            monsterList.add(new Monster(randomlySetMonsterPositionX(monster), randomlySetMonsterPositionY(monster)));
         }
 
-        gameBoard = new char[gameBoardLogic.getHeightWithFrame()][gameBoardLogic.getWidthWithFrame()];
-
-        refreshGameBoard( tempPlayer );
+        refreshGameBoard(tempPlayer);
 
         while ((tempPlayer.getLiveQuantity() > 0) && (!monsterList.isEmpty())) {
-            gameLoop( tempPlayer, directionReader );
+            gameLoop(tempPlayer, directionReader);
         }
     }
 
     public GameDifficulty runMenu() throws IOException {
 
-        System.out.println( "Welcome to game 'Monster'" );
-        System.out.println( "Choose the difficulty: 1 - EASY, 2 - MEDIUM, 3 - HARD" );
+        System.out.println("Welcome to game 'Monster'");
+        System.out.println("Choose the difficulty: 1 - EASY, 2 - MEDIUM, 3 - HARD");
 
-        BufferedReader directionReader = new BufferedReader( new InputStreamReader( System.in ) );
+        BufferedReader directionReader = new BufferedReader(new InputStreamReader(System.in));
         String keyChosenDifficulty = directionReader.readLine();
         switch (keyChosenDifficulty) {
             case "1":
@@ -68,57 +64,57 @@ public class Game {
                 chosenGameDifficulty = GameDifficulty.HARD;
                 break;
         }
-        gameBoardLogic = new GameBoard(chosenGameDifficulty);
+        gameBoard = new GameBoard(chosenGameDifficulty);
         numberOfJumpsLeft = chosenGameDifficulty.getNumberOfJumps();
         return chosenGameDifficulty;
     }
 
     private void gameLoop(Player player, BufferedReader directionReader) throws IOException {
 
-        movePlayer( player, directionReader );
+        movePlayer(player, directionReader);
 
-        moveMonsterTowardPlayer( player );
+        moveMonsterTowardPlayer(player);
 
         for (Iterator<Monster> monsterIterator = monsterList.iterator(); monsterIterator.hasNext(); ) {
             Monster monster = monsterIterator.next();
             if ((monster.getPositionX() == player.getPositionX()) && (monster.getPositionY() == player.getPositionY())) {
                 player.looseLive();
                 if (player.getLiveQuantity() == 0) {
-                    System.err.println( "YOU'VE LOST!!!!!" );
+                    System.err.println("YOU'VE LOST!!!!!");
                     break;
                 } else {
-                    randomlySetPlayerPosition( player );
+                    randomlySetPlayerPosition(player);
                     System.err.println("Quantity of lives left: " + player.getLiveQuantity());
                 }
                 monster.looseLive();
                 if (monster.getLiveQuantity() == 0) {
-                    monsterToKillList.add( monster );
+                    monsterToKillList.add(monster);
                 }
             }
             for (Iterator<Monster> killingMonsterIterator = monsterList.iterator(); killingMonsterIterator.hasNext(); ) {
                 Monster monsterToKill = killingMonsterIterator.next();
                 if ((monster.getPositionX() == monsterToKill.getPositionX())
                         && ((monster.getPositionY() == monsterToKill.getPositionY())
-                        && (!monster.equals( monsterToKill )))) {
+                        && (!monster.equals(monsterToKill)))) {
                     monsterToKill.looseLive();
                     if (monsterToKill.getLiveQuantity() == 0) {
-                        monsterToKillList.add( monsterToKill );
+                        monsterToKillList.add(monsterToKill);
                     }
                     monster.looseLive();
                     if (monster.getLiveQuantity() == 0) {
-                        monsterToKillList.add( monster );
+                        monsterToKillList.add(monster);
                     }
                 }
 
             }
         }
-        monsterList.removeAll( monsterToKillList );
+        monsterList.removeAll(monsterToKillList);
 
         if (monsterList.isEmpty()) {
-            System.err.println( "VICTORY!!!" );
+            System.err.println("VICTORY!!!");
         }
 
-        refreshGameBoard( player );
+        refreshGameBoard(player);
     }
 
     private void moveMonsterTowardPlayer(Player player) {
@@ -129,21 +125,21 @@ public class Game {
             int playerPositionY = player.getPositionY();
 
             if ((monsterPositionX < playerPositionX) && (monsterPositionY < playerPositionY)) {
-                monster.move( MoveDirectionOfCharacter.SE );
+                monster.move(MoveDirectionOfCharacter.SE);
             } else if ((monsterPositionX < playerPositionX) && (monsterPositionY == playerPositionY)) {
-                monster.move( MoveDirectionOfCharacter.S );
+                monster.move(MoveDirectionOfCharacter.S);
             } else if ((monsterPositionX < playerPositionX) && (monsterPositionY > playerPositionY)) {
-                monster.move( MoveDirectionOfCharacter.SW );
+                monster.move(MoveDirectionOfCharacter.SW);
             } else if ((monsterPositionX == playerPositionX) && (monsterPositionY > playerPositionY)) {
-                monster.move( MoveDirectionOfCharacter.W );
+                monster.move(MoveDirectionOfCharacter.W);
             } else if ((monsterPositionX > playerPositionX) && (monsterPositionY > playerPositionY)) {
-                monster.move( MoveDirectionOfCharacter.NW );
+                monster.move(MoveDirectionOfCharacter.NW);
             } else if ((monsterPositionX > playerPositionX) && (monsterPositionY == playerPositionY)) {
-                monster.move( MoveDirectionOfCharacter.N );
+                monster.move(MoveDirectionOfCharacter.N);
             } else if ((monsterPositionX > playerPositionX) && (monsterPositionY < playerPositionY)) {
-                monster.move( MoveDirectionOfCharacter.NE );
+                monster.move(MoveDirectionOfCharacter.NE);
             } else if ((monsterPositionX == playerPositionX) && (monsterPositionY < playerPositionY)) {
-                monster.move( MoveDirectionOfCharacter.E );
+                monster.move(MoveDirectionOfCharacter.E);
             }
         }
     }
@@ -155,84 +151,84 @@ public class Game {
         switch (keyBoardDirection) {
             case "8":
                 if (player.getPositionX() > GameBoard.getFirstColumnAfterFrame()) {
-                    player.move( MoveDirectionOfCharacter.N );
-                } else movePlayer( player, directionReader );
+                    player.move(MoveDirectionOfCharacter.N);
+                } else movePlayer(player, directionReader);
                 break;
             case "9":
                 if ((player.getPositionX() > GameBoard.getFirstColumnAfterFrame())
-                        && (player.getPositionY() < gameBoardLogic.getLastColumnBeforeFrame())) {
-                    player.move( MoveDirectionOfCharacter.NE );
-                } else movePlayer( player, directionReader );
+                        && (player.getPositionY() < gameBoard.getLastColumnBeforeFrame())) {
+                    player.move(MoveDirectionOfCharacter.NE);
+                } else movePlayer(player, directionReader);
                 break;
             case "6":
-                if (player.getPositionY() < gameBoardLogic.getLastColumnBeforeFrame()) {
-                    player.move( MoveDirectionOfCharacter.E );
-                } else movePlayer( player, directionReader );
+                if (player.getPositionY() < gameBoard.getLastColumnBeforeFrame()) {
+                    player.move(MoveDirectionOfCharacter.E);
+                } else movePlayer(player, directionReader);
                 break;
             case "3":
-                if ((player.getPositionX() < gameBoardLogic.getLastRowBeforeFrame())
-                        && (player.getPositionY() < gameBoardLogic.getLastColumnBeforeFrame())) {
-                    player.move( MoveDirectionOfCharacter.SE );
-                } else movePlayer( player, directionReader );
+                if ((player.getPositionX() < gameBoard.getLastRowBeforeFrame())
+                        && (player.getPositionY() < gameBoard.getLastColumnBeforeFrame())) {
+                    player.move(MoveDirectionOfCharacter.SE);
+                } else movePlayer(player, directionReader);
                 break;
             case "2":
-                if (player.getPositionX() < gameBoardLogic.getLastRowBeforeFrame()) {
-                    player.move( MoveDirectionOfCharacter.S );
-                } else movePlayer( player, directionReader );
+                if (player.getPositionX() < gameBoard.getLastRowBeforeFrame()) {
+                    player.move(MoveDirectionOfCharacter.S);
+                } else movePlayer(player, directionReader);
                 break;
             case "1":
-                if ((player.getPositionX() < gameBoardLogic.getLastRowBeforeFrame())
+                if ((player.getPositionX() < gameBoard.getLastRowBeforeFrame())
                         && (player.getPositionY() > GameBoard.getFirstRowAfterFrame())) {
-                    player.move( MoveDirectionOfCharacter.SW );
-                } else movePlayer( player, directionReader );
+                    player.move(MoveDirectionOfCharacter.SW);
+                } else movePlayer(player, directionReader);
                 break;
             case "4":
                 if (player.getPositionY() > GameBoard.getFirstRowAfterFrame()) {
-                    player.move( MoveDirectionOfCharacter.W );
-                } else movePlayer( player, directionReader );
+                    player.move(MoveDirectionOfCharacter.W);
+                } else movePlayer(player, directionReader);
                 break;
             case "7":
                 if ((player.getPositionX() > GameBoard.getFirstColumnAfterFrame())
                         && (player.getPositionY() > GameBoard.getFirstRowAfterFrame())) {
-                    player.move( MoveDirectionOfCharacter.NW );
-                } else movePlayer( player, directionReader );
+                    player.move(MoveDirectionOfCharacter.NW);
+                } else movePlayer(player, directionReader);
                 break;
             case "5":
                 if (numberOfJumpsLeft > 0) {
-                    randomlySetPlayerPosition( player );
+                    randomlySetPlayerPosition(player);
                     numberOfJumpsLeft--;
-                } else movePlayer( player, directionReader );
+                } else movePlayer(player, directionReader);
                 break;
         }
     }
 
     private void refreshGameBoard(Player player) {
-        for (int row = 0; row < gameBoardLogic.getHeightWithFrame(); row++) {
-            for (int column = 0; column < gameBoardLogic.getWidthWithFrame(); column++) {
+        for (int row = 0; row < gameBoard.getHeightWithFrame(); row++) {
+            for (int column = 0; column < gameBoard.getWidthWithFrame(); column++) {
                 if (row == 0) {
-                    gameBoard[row][column] = '#';
-                } else if (row == gameBoardLogic.getLastRowWithFrame()) {
-                    gameBoard[row][column] = '#';
+                    gameBoard.gameBoardPicture[row][column] = '#';
+                } else if (row == gameBoard.getLastRowWithFrame()) {
+                    gameBoard.gameBoardPicture[row][column] = '#';
                 } else if (column == 0) {
-                    gameBoard[row][column] = '#';
-                } else if (column == gameBoardLogic.getLastColumnWithFrame()) {
-                    gameBoard[row][column] = '#';
+                    gameBoard.gameBoardPicture[row][column] = '#';
+                } else if (column == gameBoard.getLastColumnWithFrame()) {
+                    gameBoard.gameBoardPicture[row][column] = '#';
                 } else {
-                    gameBoard[row][column] = ' ';
+                    gameBoard.gameBoardPicture[row][column] = ' ';
                 }
 
                 if ((row == player.getPositionX()) && (column == player.getPositionY())) {
-                    gameBoard[row][column] = 'P';
+                    gameBoard.gameBoardPicture[row][column] = 'P';
                 }
 
                 for (Monster monster : monsterList) {
                     if (monster.getLiveQuantity() != 0) {
                         if ((row == monster.getPositionX()) && (column == monster.getPositionY())) {
-                            gameBoard[row][column] = 'M';
+                            gameBoard.gameBoardPicture[row][column] = 'M';
                         }
                     }
                 }
-                System.out.print( gameBoard[row][column] );
+                System.out.print(gameBoard.gameBoardPicture[row][column]);
             }
             System.out.println();
 
@@ -240,33 +236,33 @@ public class Game {
         System.out.println();
     }
 
-    public GameBoard getGameBoardLogic() {
-        return gameBoardLogic;
+    public GameBoard getGameBoard() {
+        return gameBoard;
     }
 
     public void randomlySetPlayerPosition(Player player) {
-        randomlySetPlayerPositionX( player );
-        randomlySetPlayerPositionY( player );
+        randomlySetPlayerPositionX(player);
+        randomlySetPlayerPositionY(player);
     }
 
     public int randomlySetPlayerPositionX(Player player) {
-        return player.setPositionX( random.nextInt( gameBoardLogic.getHeightWithoutFrame() ) + 1 );
+        return player.setPositionX(random.nextInt(gameBoard.getHeightWithoutFrame()) + 1);
     }
 
     public int randomlySetPlayerPositionY(Player player) {
-        return player.setPositionY( random.nextInt( gameBoardLogic.getWidthWithoutFrame() ) + 1 );
+        return player.setPositionY(random.nextInt(gameBoard.getWidthWithoutFrame()) + 1);
     }
 
     public void randomlySetMonsterPosition(Monster monster) {
-        randomlySetMonsterPositionX( monster );
-        randomlySetMonsterPositionY( monster );
+        randomlySetMonsterPositionX(monster);
+        randomlySetMonsterPositionY(monster);
     }
 
     public int randomlySetMonsterPositionX(Monster monster) {
-        return monster.setPositionX( random.nextInt( gameBoardLogic.getHeightWithoutFrame() ) + 1 );
+        return monster.setPositionX(random.nextInt(gameBoard.getHeightWithoutFrame()) + 1);
     }
 
     public int randomlySetMonsterPositionY(Monster monster) {
-        return monster.setPositionY( random.nextInt( gameBoardLogic.getWidthWithoutFrame() ) + 1 );
+        return monster.setPositionY(random.nextInt(gameBoard.getWidthWithoutFrame()) + 1);
     }
 }
