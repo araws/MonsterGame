@@ -93,22 +93,7 @@ public class Game {
                     monsterToKillList.add(monster);
                 }
             }
-            for (Iterator<Monster> killingMonsterIterator = monsterList.iterator(); killingMonsterIterator.hasNext(); ) {
-                Monster monsterToKill = killingMonsterIterator.next();
-                if ((monster.getPositionX() == monsterToKill.getPositionX())
-                        && ((monster.getPositionY() == monsterToKill.getPositionY())
-                        && (!monster.equals(monsterToKill)))) {
-                    monsterToKill.looseLive();
-                    if (monsterToKill.getLiveQuantity() == 0) {
-                        monsterToKillList.add(monsterToKill);
-                    }
-                    monster.looseLive();
-                    if (monster.getLiveQuantity() == 0) {
-                        monsterToKillList.add(monster);
-                    }
-                }
-
-            }
+            addKilledMonsterToMonsterToKillList(monsterToKillList, monster);
         }
         monsterList.removeAll(monsterToKillList);
 
@@ -235,6 +220,25 @@ public class Game {
 
         }
         System.out.println();
+    }
+
+    private void addKilledMonsterToMonsterToKillList(List<Monster> monsterToKillList, Monster monster) {
+        for (Iterator<Monster> killingMonsterIterator = monsterList.iterator(); killingMonsterIterator.hasNext(); ) {
+            Monster monsterToKill = killingMonsterIterator.next();
+            if ((monster.getPositionX() == monsterToKill.getPositionX())
+                    && ((monster.getPositionY() == monsterToKill.getPositionY())
+                    && (!monster.equals(monsterToKill)))) {
+                monsterToKill.looseLive();
+                if (monsterToKill.getLiveQuantity() == 0) {
+                    monsterToKillList.add(monsterToKill);
+                }
+                monster.looseLive();
+                if (monster.getLiveQuantity() == 0) {
+                    monsterToKillList.add(monster);
+                }
+            }
+
+        }
     }
 
     public void randomlySetPlayerPosition(Player player) {
