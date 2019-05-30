@@ -48,7 +48,7 @@ public class Game {
         }
     }
 
-    public GameDifficulty runMenu() throws IOException {
+    public void runMenu() throws IOException {
 
         System.out.println("Welcome to game 'Monster'");
         System.out.println("Choose the difficulty: 1 - EASY, 2 - MEDIUM, 3 - HARD");
@@ -68,7 +68,6 @@ public class Game {
         }
         gameBoard = new GameBoard(chosenGameDifficulty);
         numberOfPlayerJumpsLeft = chosenGameDifficulty.getNumberOfJumps();
-        return chosenGameDifficulty;
     }
 
     private void gameLoop(Player player, BufferedReader directionReader) throws IOException {
