@@ -41,8 +41,6 @@ public class Game {
 
         gameBoard.getGameBoardPicture();
 
-        refreshGameBoard(tempPlayer);
-
         while ((tempPlayer.getLiveQuantity() > 0) && (!monsterList.isEmpty())) {
             gameLoop(tempPlayer, directionReader);
         }
@@ -68,6 +66,25 @@ public class Game {
         }
         gameBoard = new GameBoard(chosenGameDifficulty);
         numberOfPlayerJumpsLeft = chosenGameDifficulty.getNumberOfJumps();
+    }
+
+    private void gameLoop(Player player, BufferedReader directionReader) throws IOException {
+
+        refreshGameBoard(player);
+
+        movePlayer(player, directionReader);
+        List<Monster> monsterToKillList = new ArrayList<>();
+
+        moveMonsterTowardPlayer(player);
+
+        checkCollisionsMostersWithPlayer(player, monsterToKillList);
+        monsterList.removeAll(monsterToKillList);
+
+        if (monsterList.isEmpty()) {
+            refreshGameBoard(player);
+            System.err.println("VICTORY!!!");
+        }
+
     }
 
     private void refreshGameBoard(Player player) {
@@ -101,23 +118,6 @@ public class Game {
 
         }
         System.out.println();
-    }
-
-    private void gameLoop(Player player, BufferedReader directionReader) throws IOException {
-
-        movePlayer(player, directionReader);
-        List<Monster> monsterToKillList = new ArrayList<>();
-
-        moveMonsterTowardPlayer(player);
-
-        checkCollisionsMostersWithPlayer(player, monsterToKillList);
-        monsterList.removeAll(monsterToKillList);
-
-        if (monsterList.isEmpty()) {
-            System.err.println("VICTORY!!!");
-        }
-
-        refreshGameBoard(player);
     }
 
     private void movePlayer(Player player, BufferedReader directionReader) throws IOException {
