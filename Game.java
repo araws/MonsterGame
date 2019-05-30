@@ -70,6 +70,39 @@ public class Game {
         numberOfPlayerJumpsLeft = chosenGameDifficulty.getNumberOfJumps();
     }
 
+    private void refreshGameBoard(Player player) {
+        for (int row = 0; row < gameBoard.getHeightWithFrame(); row++) {
+            for (int column = 0; column < gameBoard.getWidthWithFrame(); column++) {
+                if (row == 0) {gameBoard.getGameBoardPicture()[row][column] = '#';
+                } else if (row == gameBoard.getLastRowWithFrame()) {
+                    gameBoard.getGameBoardPicture()[row][column] = '#';
+                } else if (column == 0) {
+                    gameBoard.getGameBoardPicture()[row][column] = '#';
+                } else if (column == gameBoard.getLastColumnWithFrame()) {
+                    gameBoard.getGameBoardPicture()[row][column] = '#';
+                } else {
+                    gameBoard.getGameBoardPicture()[row][column] = ' ';
+                }
+
+                if ((row == player.getPositionX()) && (column == player.getPositionY())) {
+                    gameBoard.getGameBoardPicture()[row][column] = 'P';
+                }
+
+                for (Monster monster : monsterList) {
+                    if (monster.getLiveQuantity() != 0) {
+                        if ((row == monster.getPositionX()) && (column == monster.getPositionY())) {
+                            gameBoard.getGameBoardPicture()[row][column] = 'M';
+                        }
+                    }
+                }
+                System.out.print(gameBoard.getGameBoardPicture()[row][column]);
+            }
+            System.out.println();
+
+        }
+        System.out.println();
+    }
+
     private void gameLoop(Player player, BufferedReader directionReader) throws IOException {
 
         movePlayer(player, directionReader);
@@ -77,24 +110,7 @@ public class Game {
 
         moveMonsterTowardPlayer(player);
 
-        for (Iterator<Monster> monsterIterator = monsterList.iterator(); monsterIterator.hasNext(); ) {
-            Monster monster = monsterIterator.next();
-            if ((monster.getPositionX() == player.getPositionX()) && (monster.getPositionY() == player.getPositionY())) {
-                player.looseLive();
-                if (player.getLiveQuantity() == 0) {
-                    System.err.println("YOU'VE LOST!!!!!");
-                    break;
-                } else {
-                    randomlySetPlayerPosition(player);
-                    System.err.println("Quantity of lives left: " + player.getLiveQuantity());
-                }
-                monster.looseLive();
-                if (monster.getLiveQuantity() == 0) {
-                    monsterToKillList.add(monster);
-                }
-            }
-            addKilledMonsterToMonsterToKillList(monsterToKillList, monster);
-        }
+        checkCollisionsMostersWithPlayer(player, monsterToKillList);
         monsterList.removeAll(monsterToKillList);
 
         if (monsterList.isEmpty()) {
@@ -102,33 +118,6 @@ public class Game {
         }
 
         refreshGameBoard(player);
-    }
-
-    private void moveMonsterTowardPlayer(Player player) {
-        for (Monster monster : monsterList) {
-            int monsterPositionX = monster.getPositionX();
-            int monsterPositionY = monster.getPositionY();
-            int playerPositionX = player.getPositionX();
-            int playerPositionY = player.getPositionY();
-
-            if ((monsterPositionX < playerPositionX) && (monsterPositionY < playerPositionY)) {
-                monster.move(MoveDirectionOfCharacter.SE);
-            } else if ((monsterPositionX < playerPositionX) && (monsterPositionY == playerPositionY)) {
-                monster.move(MoveDirectionOfCharacter.S);
-            } else if ((monsterPositionX < playerPositionX) && (monsterPositionY > playerPositionY)) {
-                monster.move(MoveDirectionOfCharacter.SW);
-            } else if ((monsterPositionX == playerPositionX) && (monsterPositionY > playerPositionY)) {
-                monster.move(MoveDirectionOfCharacter.W);
-            } else if ((monsterPositionX > playerPositionX) && (monsterPositionY > playerPositionY)) {
-                monster.move(MoveDirectionOfCharacter.NW);
-            } else if ((monsterPositionX > playerPositionX) && (monsterPositionY == playerPositionY)) {
-                monster.move(MoveDirectionOfCharacter.N);
-            } else if ((monsterPositionX > playerPositionX) && (monsterPositionY < playerPositionY)) {
-                monster.move(MoveDirectionOfCharacter.NE);
-            } else if ((monsterPositionX == playerPositionX) && (monsterPositionY < playerPositionY)) {
-                monster.move(MoveDirectionOfCharacter.E);
-            }
-        }
     }
 
     private void movePlayer(Player player, BufferedReader directionReader) throws IOException {
@@ -189,37 +178,52 @@ public class Game {
         }
     }
 
-     private void refreshGameBoard(Player player) {
-        for (int row = 0; row < gameBoard.getHeightWithFrame(); row++) {
-            for (int column = 0; column < gameBoard.getWidthWithFrame(); column++) {
-                if (row == 0) {gameBoard.getGameBoardPicture()[row][column] = '#';
-                } else if (row == gameBoard.getLastRowWithFrame()) {
-                    gameBoard.getGameBoardPicture()[row][column] = '#';
-                } else if (column == 0) {
-                    gameBoard.getGameBoardPicture()[row][column] = '#';
-                } else if (column == gameBoard.getLastColumnWithFrame()) {
-                    gameBoard.getGameBoardPicture()[row][column] = '#';
-                } else {
-                    gameBoard.getGameBoardPicture()[row][column] = ' ';
-                }
+    private void moveMonsterTowardPlayer(Player player) {
+        for (Monster monster : monsterList) {
+            int monsterPositionX = monster.getPositionX();
+            int monsterPositionY = monster.getPositionY();
+            int playerPositionX = player.getPositionX();
+            int playerPositionY = player.getPositionY();
 
-                if ((row == player.getPositionX()) && (column == player.getPositionY())) {
-                    gameBoard.getGameBoardPicture()[row][column] = 'P';
-                }
-
-                for (Monster monster : monsterList) {
-                    if (monster.getLiveQuantity() != 0) {
-                        if ((row == monster.getPositionX()) && (column == monster.getPositionY())) {
-                            gameBoard.getGameBoardPicture()[row][column] = 'M';
-                        }
-                    }
-                }
-                System.out.print(gameBoard.getGameBoardPicture()[row][column]);
+            if ((monsterPositionX < playerPositionX) && (monsterPositionY < playerPositionY)) {
+                monster.move(MoveDirectionOfCharacter.SE);
+            } else if ((monsterPositionX < playerPositionX) && (monsterPositionY == playerPositionY)) {
+                monster.move(MoveDirectionOfCharacter.S);
+            } else if ((monsterPositionX < playerPositionX) && (monsterPositionY > playerPositionY)) {
+                monster.move(MoveDirectionOfCharacter.SW);
+            } else if ((monsterPositionX == playerPositionX) && (monsterPositionY > playerPositionY)) {
+                monster.move(MoveDirectionOfCharacter.W);
+            } else if ((monsterPositionX > playerPositionX) && (monsterPositionY > playerPositionY)) {
+                monster.move(MoveDirectionOfCharacter.NW);
+            } else if ((monsterPositionX > playerPositionX) && (monsterPositionY == playerPositionY)) {
+                monster.move(MoveDirectionOfCharacter.N);
+            } else if ((monsterPositionX > playerPositionX) && (monsterPositionY < playerPositionY)) {
+                monster.move(MoveDirectionOfCharacter.NE);
+            } else if ((monsterPositionX == playerPositionX) && (monsterPositionY < playerPositionY)) {
+                monster.move(MoveDirectionOfCharacter.E);
             }
-            System.out.println();
-
         }
-        System.out.println();
+    }
+
+    private void checkCollisionsMostersWithPlayer(Player player, List<Monster> monsterToKillList) {
+        for (Iterator<Monster> monsterIterator = monsterList.iterator(); monsterIterator.hasNext(); ) {
+            Monster monster = monsterIterator.next();
+            if ((monster.getPositionX() == player.getPositionX()) && (monster.getPositionY() == player.getPositionY())) {
+                player.looseLive();
+                if (player.getLiveQuantity() == 0) {
+                    System.err.println("YOU'VE LOST!!!!!");
+                    break;
+                } else {
+                    randomlySetPlayerPosition(player);
+                    System.err.println("Quantity of lives left: " + player.getLiveQuantity());
+                }
+                monster.looseLive();
+                if (monster.getLiveQuantity() == 0) {
+                    monsterToKillList.add(monster);
+                }
+            }
+            addKilledMonsterToMonsterToKillList(monsterToKillList, monster);
+        }
     }
 
     private void addKilledMonsterToMonsterToKillList(List<Monster> monsterToKillList, Monster monster) {
