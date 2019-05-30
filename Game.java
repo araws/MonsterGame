@@ -237,10 +237,6 @@ public class Game {
         System.out.println();
     }
 
-    public GameBoard getGameBoard() {
-        return gameBoard;
-    }
-
     public void randomlySetPlayerPosition(Player player) {
         randomlySetPlayerPositionX(player);
         randomlySetPlayerPositionY(player);
@@ -252,11 +248,6 @@ public class Game {
 
     public int randomlySetPlayerPositionY(Player player) {
         return player.setPositionY(random.nextInt(gameBoard.getWidthWithoutFrame()) + 1);
-    }
-
-    public void randomlySetMonsterPosition(Monster monster) {
-        randomlySetMonsterPositionX(monster);
-        randomlySetMonsterPositionY(monster);
     }
 
     public int randomlySetMonsterPositionX(Monster monster) {
