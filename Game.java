@@ -39,6 +39,8 @@ public class Game {
             monsterList.add(new Monster(randomlySetMonsterPositionX(monster), randomlySetMonsterPositionY(monster)));
         }
 
+        gameBoard.getGameBoardPicture();
+
         refreshGameBoard(tempPlayer);
 
         while ((tempPlayer.getLiveQuantity() > 0) && (!monsterList.isEmpty())) {
@@ -203,33 +205,32 @@ public class Game {
         }
     }
 
-    private void refreshGameBoard(Player player) {
+     private void refreshGameBoard(Player player) {
         for (int row = 0; row < gameBoard.getHeightWithFrame(); row++) {
             for (int column = 0; column < gameBoard.getWidthWithFrame(); column++) {
-                if (row == 0) {
-                    gameBoard.gameBoardPicture[row][column] = '#';
+                if (row == 0) {gameBoard.getGameBoardPicture()[row][column] = '#';
                 } else if (row == gameBoard.getLastRowWithFrame()) {
-                    gameBoard.gameBoardPicture[row][column] = '#';
+                    gameBoard.getGameBoardPicture()[row][column] = '#';
                 } else if (column == 0) {
-                    gameBoard.gameBoardPicture[row][column] = '#';
+                    gameBoard.getGameBoardPicture()[row][column] = '#';
                 } else if (column == gameBoard.getLastColumnWithFrame()) {
-                    gameBoard.gameBoardPicture[row][column] = '#';
+                    gameBoard.getGameBoardPicture()[row][column] = '#';
                 } else {
-                    gameBoard.gameBoardPicture[row][column] = ' ';
+                    gameBoard.getGameBoardPicture()[row][column] = ' ';
                 }
 
                 if ((row == player.getPositionX()) && (column == player.getPositionY())) {
-                    gameBoard.gameBoardPicture[row][column] = 'P';
+                    gameBoard.getGameBoardPicture()[row][column] = 'P';
                 }
 
                 for (Monster monster : monsterList) {
                     if (monster.getLiveQuantity() != 0) {
                         if ((row == monster.getPositionX()) && (column == monster.getPositionY())) {
-                            gameBoard.gameBoardPicture[row][column] = 'M';
+                            gameBoard.getGameBoardPicture()[row][column] = 'M';
                         }
                     }
                 }
-                System.out.print(gameBoard.gameBoardPicture[row][column]);
+                System.out.print(gameBoard.getGameBoardPicture()[row][column]);
             }
             System.out.println();
 
