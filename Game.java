@@ -71,26 +71,23 @@ public class Game {
     private void gameLoop(Player player, BufferedReader directionReader) throws IOException {
 
         refreshGameBoard(player);
-
         movePlayer(player, directionReader);
         List<Monster> monsterToKillList = new ArrayList<>();
-
         moveMonsterTowardPlayer(player);
-
-        checkCollisionsMostersWithPlayer(player, monsterToKillList);
+        checkCollisionsMonstersWithPlayerLoop(player, monsterToKillList);
         monsterList.removeAll(monsterToKillList);
 
         if (monsterList.isEmpty()) {
             refreshGameBoard(player);
             System.err.println("VICTORY!!!");
         }
-
     }
 
     private void refreshGameBoard(Player player) {
         for (int row = 0; row < gameBoard.getHeightWithFrame(); row++) {
             for (int column = 0; column < gameBoard.getWidthWithFrame(); column++) {
-                if (row == 0) {gameBoard.getGameBoardPicture()[row][column] = '#';
+                if (row == 0) {
+                    gameBoard.getGameBoardPicture()[row][column] = '#';
                 } else if (row == gameBoard.getLastRowWithFrame()) {
                     gameBoard.getGameBoardPicture()[row][column] = '#';
                 } else if (column == 0) {
@@ -205,7 +202,7 @@ public class Game {
         }
     }
 
-    private void checkCollisionsMostersWithPlayer(Player player, List<Monster> monsterToKillList) {
+    private void checkCollisionsMonstersWithPlayerLoop(Player player, List<Monster> monsterToKillList) {
         for (Iterator<Monster> monsterIterator = monsterList.iterator(); monsterIterator.hasNext(); ) {
             Monster monster = monsterIterator.next();
             if ((monster.getPositionX() == player.getPositionX()) && (monster.getPositionY() == player.getPositionY())) {
@@ -222,11 +219,11 @@ public class Game {
                     monsterToKillList.add(monster);
                 }
             }
-            addKilledMonsterToMonsterToKillList(monsterToKillList, monster);
+            addKilledMonsterToMonsterToKillListLoop(monsterToKillList, monster);
         }
     }
 
-    private void addKilledMonsterToMonsterToKillList(List<Monster> monsterToKillList, Monster monster) {
+    private void addKilledMonsterToMonsterToKillListLoop(List<Monster> monsterToKillList, Monster monster) {
         for (Iterator<Monster> killingMonsterIterator = monsterList.iterator(); killingMonsterIterator.hasNext(); ) {
             Monster monsterToKill = killingMonsterIterator.next();
             if ((monster.getPositionX() == monsterToKill.getPositionX())
