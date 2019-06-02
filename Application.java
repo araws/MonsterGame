@@ -3,8 +3,12 @@ package monsterGame;
 import java.io.IOException;
 
 public class Application {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args){
         Game game = new Game();
-        game.start();
+        try {
+            game.start();
+        } catch (IOException | NullPointerException e) {
+            System.err.println("Wrong key!!");
+        }
     }
 }

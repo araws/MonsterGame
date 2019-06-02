@@ -25,11 +25,9 @@ public class Game {
     private Random random = new Random();
 
 
-    public void start() throws IOException {
+    public void start() throws IOException, NullPointerException {
 
         runMenu();
-
-        System.out.println("Chosen difficulty: " + chosenGameDifficulty);
 
         BufferedReader directionReader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -46,26 +44,30 @@ public class Game {
         }
     }
 
-    public void runMenu() throws IOException {
+    public void runMenu() throws NullPointerException {
 
-        System.out.println("Welcome to game 'Monster'");
-        System.out.println("Choose the difficulty: 1 - EASY, 2 - MEDIUM, 3 - HARD");
+        try {
+            BufferedReader directionReader = new BufferedReader(new InputStreamReader(System.in));
 
-        BufferedReader directionReader = new BufferedReader(new InputStreamReader(System.in));
-        String keyChosenDifficulty = directionReader.readLine();
-        switch (keyChosenDifficulty) {
-            case "1":
-                chosenGameDifficulty = GameDifficulty.EASY;
-                break;
-            case "2":
-                chosenGameDifficulty = GameDifficulty.MEDIUM;
-                break;
-            case "3":
-                chosenGameDifficulty = GameDifficulty.HARD;
-                break;
+            String keyChosenDifficulty = directionReader.readLine();
+
+            switch (keyChosenDifficulty) {
+                case "1":
+                    chosenGameDifficulty = GameDifficulty.EASY;
+                    break;
+                case "2":
+                    chosenGameDifficulty = GameDifficulty.MEDIUM;
+                    break;
+                case "3":
+                    chosenGameDifficulty = GameDifficulty.HARD;
+                    break;
+            }
+            gameBoard = new GameBoard(chosenGameDifficulty);
+            numberOfPlayerJumpsLeft = chosenGameDifficulty.getNumberOfJumps();
+        } catch (IOException e) {
+            System.out.println("Please choose 1, 2 or 3!!!");
+            runMenu();
         }
-        gameBoard = new GameBoard(chosenGameDifficulty);
-        numberOfPlayerJumpsLeft = chosenGameDifficulty.getNumberOfJumps();
     }
 
     private void gameLoop(Player player, BufferedReader directionReader) throws IOException {
