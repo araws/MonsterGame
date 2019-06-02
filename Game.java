@@ -27,7 +27,9 @@ public class Game {
 
     public void start() throws IOException, NullPointerException {
 
+        showWelcomeWindow();
         runMenu();
+        showChosenDifficultyInfo();
 
         BufferedReader directionReader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -42,6 +44,26 @@ public class Game {
         while ((tempPlayer.getLiveQuantity() > 0) && (!monsterList.isEmpty())) {
             gameLoop(tempPlayer, directionReader);
         }
+    }
+
+    private void showWelcomeWindow() {
+        System.out.println("Welcome in Monster Game :)");
+        System.out.println("You ('P') have to eliminate each monster ('M')");
+        System.out.println("You can move by 1 field with numeric pad 789");
+        System.out.println("                                         4 6");
+        System.out.println("                                         123");
+        System.out.println("You can randomly jump with 5");
+        System.out.println();
+        System.out.println("Choose the difficulty: 1 - EASY, 2 - MEDIUM, 3 - HARD");
+    }
+
+    private void showChosenDifficultyInfo() {
+        System.out.println("You chose " + chosenGameDifficulty);
+        System.out.println("You have " + chosenGameDifficulty.getNumberOfPlayerLives() + " lives");
+        System.out.println("You have " + chosenGameDifficulty.getNumberOfJumps() + " jumps");
+        System.out.println();
+        System.out.println("GOOD LUCK :)");
+        System.out.println();
     }
 
     public void runMenu() throws NullPointerException {
