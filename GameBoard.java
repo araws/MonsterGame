@@ -1,6 +1,8 @@
 package monsterGame;
 
 public class GameBoard {
+
+    private char[][] gameBoardPicture;
     private int heightWithoutFrame;
     private int widthWithoutFrame;
     private int heightWithFrame;
@@ -48,6 +50,11 @@ public class GameBoard {
                 this.lastColumnWithFrame = GameDifficulty.HARD.getBoardWidth() + 1;
                 break;
         }
+        gameBoardPicture = new char[getHeightWithFrame()][getWidthWithFrame()];
+    }
+
+    public char[][] getGameBoardPicture() {
+        return gameBoardPicture;
     }
 
     public int getHeightWithoutFrame() {
