@@ -23,7 +23,7 @@ You can randomly jump with 5
                           the other one responsible for menu
                           and the other one responsible for the rest.
                           
-- There are some methods should be extract from code.
+- There are some methods should be extract from the code.
 
 ## Build with
 
