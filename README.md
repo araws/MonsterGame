@@ -12,10 +12,10 @@ You ('P') have to eliminate each monster ('M').
 
 ### Controls
 
-- You can move by 1 field with numeric pad 789
--                                          4 6
--                                          123
-- You can randomly jump with 5
+You can move by 1 field with numeric pad 789
+                                         4 6
+                                         123                     
+You can randomly jump with 5
 
 ### To Do
 
