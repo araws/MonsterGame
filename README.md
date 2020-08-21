@@ -2,7 +2,7 @@
 
 This is my first 2-D game.
 
-## Getting stared
+## Getting started
 
 This program is able to run only in console of IDE.
 
